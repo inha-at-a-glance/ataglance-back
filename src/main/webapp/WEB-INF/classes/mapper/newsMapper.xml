@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.AtaGlance.repository.mybatis.NewsMapper">
+    <insert id="saveNews" parameterType="com.AtaGlance.dto.News">
+        INSERT INTO News (news_id, title, source_url, source_bc, category, created_at, updated_at)
+        VALUES (0, #{title}, #{sourceUrl}, #{sourceBc}, #{category}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <select id="getAllNews" resultType="com.AtaGlance.dto.News">
+        SELECT
+            news_id AS newsId,
+            video_file_path AS videoFilePath,
+            title,
+            category,
+            created_at AS createdAt
+        FROM News;
+    </select>
+
+    <!-- Fetch news by ID -->
+    <select id="getNewsById" resultType="com.AtaGlance.dto.News">
+        SELECT
+            news_id AS newsId,
+            source_bc AS sourceBc,
+            source_url AS sourceUrl,
+            video_file_path AS videoFilePath,
+            title,
+            category,
+            created_at AS createdAt
+        FROM News
+        WHERE news_id = #{newsId};
+    </select>
+
+    <!-- Fetch news by category -->
+    <select id="getNewsByCategory" resultType="com.AtaGlance.dto.News">
+        SELECT
+            news_id AS newsId,
+            video_file_path AS videoFilePath,
+            title,
+            category,
+            created_at AS createdAt
+        FROM News
+        WHERE category = #{category};
+    </select>
+
+</mapper>

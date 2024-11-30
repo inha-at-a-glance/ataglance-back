@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.AtaGlance.repository.mybatis.TextProcMapper">
+<select id="getTextProcByNewsId" parameterType="int" resultType="com.AtaGlance.dto.TextProc">
+    SELECT
+        text_id AS textId,
+        news_id AS newsId,
+        summary_txt AS summaryTxt
+    FROM TextProc
+    WHERE news_id = #{newsId};
+</select>
+</mapper>

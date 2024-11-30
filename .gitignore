@@ -174,3 +174,4 @@ buildNumber.properties
 /src/main/resources/application.properties
 /src/main/webapp/WEB-INF/resources/config.properties
 !/src/main/webapp/WEB-INF/resources/config.properties
+/src/main/webapp/WEB-INF/resources/config.properties

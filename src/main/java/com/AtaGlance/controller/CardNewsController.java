@@ -7,14 +7,14 @@ import com.AtaGlance.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/api/cardnews")
 @RequiredArgsConstructor
 public class CardNewsController {
@@ -28,11 +28,12 @@ public class CardNewsController {
 
     // 전체 뉴스 출력
     @GetMapping("/all")
-    public ModelAndView getAllNews() {
-        List<News> newsList = newsService.getAllNews();
-        ModelAndView mav = new ModelAndView("cardnewsList");
-        mav.addObject("newsList", newsList);
-        return mav;
+    public List<News> getAllNews() {
+//        List<News> newsList = newsService.getAllNews();
+//        ModelAndView mav = new ModelAndView("CardnewsList");
+//        mav.addObject("newsList", newsList);
+//        return mav;
+        return newsService.getAllNews();
     }
 
     // 카테고리별 뉴스 출력
@@ -45,16 +46,25 @@ public class CardNewsController {
 
     // 카드뉴스 상세
     @GetMapping("/news_id")
-    public ModelAndView getNewsDetail(@RequestParam int newsId) {
+    @ResponseBody
+    public Map<String, Object> getNewsDetail(@RequestParam int newsId) {
         News news = newsService.getNewsById(newsId);
-        String imageUrl = s3Service.getPresignedUrl(news.getVideoFilePath());
         List<String> summarySentences = cardNewsService.getSummarySentences(newsId);
 
-        ModelAndView mav = new ModelAndView("cardnews");
-        mav.addObject("news", news);
-        mav.addObject("imageUrl", imageUrl);
-        mav.addObject("summarySentences", summarySentences);
-        return mav;
+        // JSON 반환을 위한 Map 생성
+        Map<String, Object> response = new HashMap<>();
+        response.put("newsId", news.getNewsId());
+        response.put("sourceBc", news.getSourceBc());
+        response.put("sourceUrl", news.getSourceUrl());
+        response.put("title", news.getTitle());
+        response.put("category", news.getCategory());
+        response.put("cardsPath", news.getCardsPath());
+        response.put("summarySentences", summarySentences);
+        response.put("newsAt", news.getNewsAt());
+        response.put("createdAt", news.getCreatedAt());
+        response.put("updatedAt", news.getUpdatedAt());
+
+        return response;
     }
 }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface NewsMapper {
-    void saveNews(News news);
+    News saveNews(News news);
     List<News> getAllNews();
 
     News getNewsById(int newsId); // Fetch a single news by its ID

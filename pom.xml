@@ -108,6 +108,22 @@
       <version>8.2.0</version>
     </dependency>
 
+    <!-- Tomcat Servlet API -->
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-servlet-api</artifactId>
+      <version>9.0.74</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Tomcat Catalina -->
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-catalina</artifactId>
+      <version>9.0.74</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- Lombok -->
     <dependency>
       <groupId>org.projectlombok</groupId>

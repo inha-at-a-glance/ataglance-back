@@ -18,7 +18,7 @@ public class NewsService implements NewsMapper{
     public NewsService(NewsMapper newsMapper) {
         this.newsMapper = newsMapper;
     }
-    public void saveNews(News news) {
+    public News saveNews(News news) {
         try {
             // YouTube 제목 크롤링 (메타데이터 방식) 후 '/' 이후 제거
             String videoTitle = YoutubeCrawler.getVideoTitleFromMeta(news.getSourceUrl());
@@ -35,18 +35,7 @@ public class NewsService implements NewsMapper{
 
         // 뉴스 저장
         newsMapper.saveNews(news);
-
-//        LambdaInvoker lambdaInvoker = new LambdaInvoker("https://5mrsawztvppepgnmxblkcevixu0hivsi.lambda-url.us-east-1.on.aws/");
-//        LambdaPayload payload = new LambdaPayload(
-//                news.getNewsId(),
-//                news.getTitle(),
-//                news.getSourceUrl()
-//        );
-//
-//        boolean success = lambdaInvoker.invoke(payload);
-//        if (!success) {
-//            System.err.println("Lambda 호출 실패!");
-//        }
+        return news;
     }
 
     public List<News> getAllNews() {

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/api/news")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class NewsController {
     @Autowired private NewsService newsService;

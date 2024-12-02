@@ -2,11 +2,14 @@ package com.AtaGlance.service;
 
 import com.AtaGlance.dto.News;
 import com.AtaGlance.dto.TextProc;
+import com.AtaGlance.dto.VideoProc;
 import com.AtaGlance.repository.mybatis.TextProcMapper;
+import com.AtaGlance.repository.mybatis.VideoProcMapper;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +20,9 @@ import java.util.List;
 public class CardNewsService {
 
     private final TextProcMapper textProcMapper;
+    private final VideoProcMapper videoProcMapper;
+    @Autowired
+    private S3Service s3Service;
 
 //    public CardNewsService(TextProcMapper textProcMapper) {
 //        this.textProcMapper = textProcMapper;
@@ -46,6 +52,36 @@ public class CardNewsService {
             // JSON 파싱 실패 시 빈 리스트 반환
             return List.of("요약문을 처리하는 중 오류가 발생했습니다.");
         }
+    }
+
+    public List<String> getObjectsPath(int newsId) {
+
+        VideoProc videoProc = videoProcMapper.getVideoProcByNewsId(newsId);
+
+        if (videoProc == null || videoProc.getObjectsPath() == null) {
+            // TextProc 객체가 없거나 요약문이 없는 경우 빈 리스트 반환
+            return List.of();
+        }
+        List<String> objectPaths = new ArrayList<>();
+
+        try {
+            // JSON 파싱
+            JSONObject jsonObject = new JSONObject(videoProc.getObjectsPath());
+            JSONArray imagePathArray = jsonObject.getJSONArray("image_path");
+
+            // 페이지별 첫 번째 객체의 S3 URI 추출 및 URL 변환
+            for (int i = 0; i < imagePathArray.length(); i++) {
+                JSONArray pageArray = imagePathArray.getJSONArray(i);
+                if (pageArray.length() > 0) {
+                    String firstS3Uri = pageArray.getString(0); // 첫 번째 S3 URI
+                    objectPaths.add(s3Service.getURL(firstS3Uri)); // URL로 변환하여 리스트에 추가
+                }
+            }
+        } catch (JSONException e) {
+            System.err.println("Error parsing JSON: " + e.getMessage());
+        }
+
+        return objectPaths;
     }
 }
 

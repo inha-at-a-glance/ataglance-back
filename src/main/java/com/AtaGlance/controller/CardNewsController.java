@@ -16,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/cardnews")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class CardNewsController {
 
@@ -50,6 +51,7 @@ public class CardNewsController {
     public Map<String, Object> getNewsDetail(@RequestParam int newsId) {
         News news = newsService.getNewsById(newsId);
         List<String> summarySentences = cardNewsService.getSummarySentences(newsId);
+        List<String> objectsPath = cardNewsService.getObjectsPath(newsId);
 
         // JSON 반환을 위한 Map 생성
         Map<String, Object> response = new HashMap<>();
@@ -58,7 +60,7 @@ public class CardNewsController {
         response.put("sourceUrl", news.getSourceUrl());
         response.put("title", news.getTitle());
         response.put("category", news.getCategory());
-        response.put("cardsPath", news.getCardsPath());
+        response.put("cardsPath", objectsPath);
         response.put("summarySentences", summarySentences);
         response.put("newsAt", news.getNewsAt());
         response.put("createdAt", news.getCreatedAt());

@@ -18,7 +18,7 @@ public class VideoProc {
     @NotNull
     private Integer textId;
 
-    private List<String> objectsPath;
+    private String objectsPath;
 
     private LocalDateTime createdAt;
 
@@ -26,13 +26,19 @@ public class VideoProc {
 
     // Constructor
     public VideoProc(Integer videoId, Integer newsId, Integer textId,
-                     List<String> objectsPath, LocalDateTime createdAt, LocalDateTime updatedAt) {
+                     String objectsPath, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.videoId = videoId;
         this.newsId = newsId;
         this.textId = textId;
         this.objectsPath = objectsPath;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public VideoProc(Integer textId, Integer newsId, String objectsPath) {
+        this.videoId = videoId;
+        this.newsId = newsId;
+        this.objectsPath = objectsPath;
     }
 
     // Getters and Setters

@@ -3,13 +3,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.time.LocalDateTime;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
-import java.io.IOException;
 
 public class YoutubeCrawler {
 
@@ -49,6 +46,32 @@ public class YoutubeCrawler {
             throw new IOException("Failed to fetch video metadata: " + e.getMessage());
         }
     }
+
+    public static LocalDateTime getVideoPublishedDate(String videoUrl) throws IOException {
+        try {
+            // Jsoup으로 YouTube 페이지 로드
+            Document document = Jsoup.connect(videoUrl).get();
+
+            // <meta itemprop="datePublished"> 태그에서 게시 날짜 추출
+            Element dateElement = document.selectFirst("meta[itemprop=datePublished]");
+            String publishedDate = null;
+            if (dateElement != null) {
+                publishedDate = dateElement.attr("content").trim(); // YYYY-MM-DD 형식
+            }
+
+            // 날짜를 찾지 못한 경우 예외 처리
+            if (publishedDate == null || publishedDate.isEmpty()) {
+                throw new IllegalArgumentException("No published date found.");
+            }
+
+            // 문자열 날짜를 LocalDateTime으로 변환
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return LocalDateTime.parse(publishedDate + "T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        } catch (IOException e) {
+            throw new IOException("Failed to fetch video metadata: " + e.getMessage());
+        }
+    }
+
 }
 
 

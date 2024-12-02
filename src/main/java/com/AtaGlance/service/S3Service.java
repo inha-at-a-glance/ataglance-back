@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
@@ -62,5 +63,14 @@ public class S3Service {
         // URL 반환
         URL url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
         return url.toString();
+    }
+
+    public String getURL(String uri) {
+        try {
+            // S3 URI를 URL로 변환
+            return new URL(uri.replaceFirst("s3://", "https://").replaceFirst(bucketName, bucketName + ".s3.amazonaws.com")).toString();
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid S3 URI: " + uri, e);
+        }
     }
 }

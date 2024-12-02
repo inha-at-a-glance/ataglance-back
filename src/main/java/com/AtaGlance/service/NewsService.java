@@ -3,6 +3,7 @@ package com.AtaGlance.service;
 import com.AtaGlance.dto.LambdaPayload;
 import com.AtaGlance.dto.News;
 import com.AtaGlance.repository.mybatis.NewsMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -22,7 +23,10 @@ public class NewsService implements NewsMapper{
         try {
             // YouTube 제목 크롤링 (메타데이터 방식) 후 '/' 이후 제거
             String videoTitle = YoutubeCrawler.getVideoTitleFromMeta(news.getSourceUrl());
+            LocalDateTime publishedDate = YoutubeCrawler.getVideoPublishedDate(news.getSourceUrl());
+            // 제목과 게시 날짜 설정
             news.setTitle(videoTitle);
+            news.setNewsAt(publishedDate);
         } catch (IOException | IllegalArgumentException e) {
             // 에러 발생 시 로그 출력 및 기본 제목 설정
             System.err.println("Error fetching video title: " + e.getMessage());

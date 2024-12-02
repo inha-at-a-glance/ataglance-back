@@ -15,7 +15,6 @@
             video_file_path AS videoFilePath,
             title,
             category,
-            cards_path AS cardsPath,
             created_at AS createdAt,
             news_at AS newsAt
         FROM News;

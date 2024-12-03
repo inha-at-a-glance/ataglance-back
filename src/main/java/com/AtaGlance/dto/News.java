@@ -18,7 +18,7 @@ public class News {
     private String videoFilePath;
     private String title;
     private Integer category;
-    private List<String> cardsPath;
+    private String cardsPath;
     private LocalDateTime newsAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -26,11 +26,12 @@ public class News {
     // Constructor
     public News() {}
     public News(Integer sourceBc, String sourceUrl, String title,
-                Integer category) {
+                Integer category, LocalDateTime newsAt) {
         this.sourceBc = sourceBc;
         this.sourceUrl = sourceUrl;
         this.title = title;
         this.category = category;
+        this.newsAt = newsAt;
     }
 
     @Override

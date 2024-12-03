@@ -3,8 +3,8 @@
 
 <mapper namespace="com.AtaGlance.repository.mybatis.NewsMapper">
     <insert id="saveNews" parameterType="com.AtaGlance.dto.News" keyProperty="newsId" >
-        INSERT INTO News (news_id, title, source_url, source_bc, category, created_at, updated_at)
-        VALUES (0, #{title}, #{sourceUrl}, #{sourceBc}, #{category}, #{createdAt}, #{updatedAt})
+        INSERT INTO News (news_id, title, source_url, source_bc, category,news_at, created_at, updated_at)
+        VALUES (0, #{title}, #{sourceUrl}, #{sourceBc}, #{category}, #{newsAt}, #{createdAt}, #{updatedAt})
     </insert>
 
     <select id="getAllNews" resultType="com.AtaGlance.dto.News">
@@ -12,7 +12,7 @@
             news_id AS newsId,
             source_bc AS sourceBc,
             source_url AS sourceUrl,
-            video_file_path AS videoFilePath,
+            cards_path AS cardPath,
             title,
             category,
             created_at AS createdAt,
@@ -26,10 +26,10 @@
             news_id AS newsId,
             source_bc AS sourceBc,
             source_url AS sourceUrl,
-            video_file_path AS videoFilePath,
             title,
             category,
-            created_at AS createdAt
+            created_at AS createdAt,
+            news_at AS newsAt
         FROM News
         WHERE news_id = #{newsId};
     </select>

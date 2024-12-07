@@ -1,14 +1,17 @@
 package com.AtaGlance.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.validation.constraints.NotNull;
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
-
 public class News {
     private Integer newsId;
     @NotNull
@@ -19,6 +22,7 @@ public class News {
     private String title;
     private Integer category;
     private String cardsPath;
+    private String thumbnail;
     private LocalDateTime newsAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

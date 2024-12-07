@@ -3,6 +3,9 @@ package com.AtaGlance.service;
 import com.AtaGlance.dto.LambdaPayload;
 import com.AtaGlance.dto.News;
 import com.AtaGlance.repository.mybatis.NewsMapper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,6 +23,8 @@ public class NewsService{
     public NewsService(NewsMapper newsMapper) {
         this.newsMapper = newsMapper;
     }
+    @Autowired
+    private S3Service s3Service;
     public News saveNews(News news) {
         try {
             // YouTube 제목 크롤링 (메타데이터 방식) 후 '/' 이후 제거
@@ -51,7 +57,21 @@ public class NewsService{
 
     public List<News> getAllNews() {
         List<News> newsList = newsMapper.getAllNews();
+        for (News news : newsList) {
+            if(news.getThumbnail() != null || news.getCardsPath() == null)continue;
+            try {
+                JSONObject jsonObject = new JSONObject(news.getCardsPath());
+                JSONArray cardsArray = jsonObject.getJSONArray("thumbnail_path");
 
+                if (cardsArray.length() != 0) {
+                    // 첫 번째 링크를 thumbnail 필드에 설정
+                    news.setThumbnail(s3Service.getURL(cardsArray.getString(0)));
+                }
+            } catch (JSONException e) {
+                // JSON 파싱 실패 시 빈 리스트 반환
+                continue;
+            }
+        }
         // Log the result from the mapper
         return newsList;
     }

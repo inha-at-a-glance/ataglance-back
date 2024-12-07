@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class NewsService implements NewsMapper{
+public class NewsService{
     private final NewsMapper newsMapper;
 
     public NewsService(NewsMapper newsMapper) {
@@ -38,7 +38,14 @@ public class NewsService implements NewsMapper{
         news.setUpdatedAt(LocalDateTime.now());
 
         // 뉴스 저장
-        newsMapper.saveNews(news);
+        if (newsMapper.existsBySourceUrl(news.getSourceUrl())) {
+            throw new IllegalArgumentException("The source URL already exists: " + news.getSourceUrl());
+        }
+        int rowsAffected = newsMapper.saveNews(news);
+        if (rowsAffected == 0) {
+            throw new RuntimeException("Failed to save news");
+        }
+
         return news;
     }
 
@@ -55,13 +62,5 @@ public class NewsService implements NewsMapper{
 
     public News getNewsById(int newsId) {
         return newsMapper.getNewsById(newsId);
-    }
-    @Override
-    public void updateNews(int id, News updateParam) {
-
-    }
-    @Override
-    public void deleteNews(int newsId) {
-
     }
 }

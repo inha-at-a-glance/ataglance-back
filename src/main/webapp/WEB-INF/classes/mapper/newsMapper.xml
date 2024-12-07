@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.AtaGlance.repository.mybatis.NewsMapper">
-    <insert id="saveNews" parameterType="com.AtaGlance.dto.News" keyProperty="newsId" >
-        INSERT INTO News (news_id, title, source_url, source_bc, category,news_at, created_at, updated_at)
+    <insert id="saveNews" parameterType="com.AtaGlance.dto.News" >
+        INSERT INTO News (news_id, title, source_url, source_bc, category, news_at, created_at, updated_at)
         VALUES (0, #{title}, #{sourceUrl}, #{sourceBc}, #{category}, #{newsAt}, #{createdAt}, #{updatedAt})
     </insert>
 
@@ -45,5 +45,11 @@
         FROM News
         WHERE category = #{category};
     </select>
+
+    <!-- 중복 체크 쿼리 -->
+    <select id="existsBySourceUrl" resultType="boolean" parameterType="string">
+        SELECT EXISTS (SELECT 1 FROM News WHERE source_url = #{sourceUrl})
+    </select>
+
 
 </mapper>

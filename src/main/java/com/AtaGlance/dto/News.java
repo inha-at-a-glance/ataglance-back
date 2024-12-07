@@ -34,6 +34,13 @@ public class News {
         this.newsAt = newsAt;
     }
 
+    public News(Integer sourceBc, String sourceUrl,
+                Integer category) {
+        this.sourceBc = sourceBc;
+        this.sourceUrl = sourceUrl;
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "News{" +

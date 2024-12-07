@@ -8,7 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface NewsMapper {
-    News saveNews(News news);
+    boolean existsBySourceUrl(@Param("sourceUrl") String sourceUrl); // 중복 체크 쿼리
+    int saveNews(News news);
     List<News> getAllNews();
 
     News getNewsById(int newsId); // Fetch a single news by its ID

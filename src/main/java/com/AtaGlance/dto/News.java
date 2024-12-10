@@ -22,7 +22,6 @@ public class News {
     private String title;
     private Integer category;
     private String cardsPath;
-    private String thumbnail;
     private LocalDateTime newsAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

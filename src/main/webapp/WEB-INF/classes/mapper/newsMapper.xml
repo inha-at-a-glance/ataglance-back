@@ -13,7 +13,6 @@
             source_bc AS sourceBc,
             source_url AS sourceUrl,
             cards_path AS cardsPath,
-            thumbnail AS thumbnail,
             title,
             category,
             created_at AS createdAt,

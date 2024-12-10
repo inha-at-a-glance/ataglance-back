@@ -69,14 +69,12 @@ public class CardNewsService {
             JSONObject jsonObject = new JSONObject(videoProc.getObjectsPath());
             JSONArray imagePathArray = jsonObject.getJSONArray("image_path");
 
-            // 페이지별 첫 번째 객체의 S3 URI 추출 및 URL 변환
+            //객체의 S3 URI 추출 및 URL 변환
             for (int i = 0; i < imagePathArray.length(); i++) {
-                JSONArray pageArray = imagePathArray.getJSONArray(i);
-                if (pageArray.length() > 0) {
-                    String firstS3Uri = pageArray.getString(0); // 첫 번째 S3 URI
-                    objectPaths.add(s3Service.getURL(firstS3Uri)); // URL로 변환하여 리스트에 추가
-                }
+                String s3Uri = imagePathArray.getString(i);
+                objectPaths.add(s3Service.getURL(s3Uri));
             }
+
         } catch (JSONException e) {
             System.err.println("Error parsing JSON: " + e.getMessage());
         }

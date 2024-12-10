@@ -57,21 +57,7 @@ public class NewsService{
 
     public List<News> getAllNews() {
         List<News> newsList = newsMapper.getAllNews();
-        for (News news : newsList) {
-            if(news.getThumbnail() != null || news.getCardsPath() == null)continue;
-            try {
-                JSONObject jsonObject = new JSONObject(news.getCardsPath());
-                JSONArray cardsArray = jsonObject.getJSONArray("thumbnail_path");
 
-                if (cardsArray.length() != 0) {
-                    // 첫 번째 링크를 thumbnail 필드에 설정
-                    news.setThumbnail(s3Service.getURL(cardsArray.getString(0)));
-                }
-            } catch (JSONException e) {
-                // JSON 파싱 실패 시 빈 리스트 반환
-                continue;
-            }
-        }
         // Log the result from the mapper
         return newsList;
     }

@@ -17,7 +17,8 @@
             category,
             created_at AS createdAt,
             news_at AS newsAt
-        FROM News;
+        FROM News
+        ORDER BY news_at DESC;
     </select>
 
     <!-- Fetch news by ID -->
